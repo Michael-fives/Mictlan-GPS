@@ -21,7 +21,7 @@ def bfs(start, end):
             return path
 
         # Explorar vecinos
-        for neighbor in ordenar_vecinos(current, grafo[current]['vecinos']):
+        for neighbor in order_neighbors(current, grafo[current]['vecinos']):
             if neighbor not in visited:
                 visited.add(neighbor)
                 parent[neighbor] = current
@@ -29,16 +29,17 @@ def bfs(start, end):
 
     return None  # Si no se encuentra ruta
 
-def es_movimiento_recto(actual, vecino):
+def is_direct(actual, neighbor):
     # Recto si fila o columna es igual
-    return actual[0] == vecino[0] or actual[1] == vecino[1]
+    return actual[0] == neighbor[0] or actual[1] == neighbor[1]
 
-def ordenar_vecinos(actual, vecinos):
-    rectos = [v for v in vecinos if es_movimiento_recto(actual, v)]
-    diagonales = [v for v in vecinos if not es_movimiento_recto(actual, v)]
-    return rectos + diagonales  # Primero los rectos
+def order_neighbors(actual, neighbors):
+    # Ordena los vecinos para priorizar los rectos
+    straights = [v for v in neighbors if is_direct(actual, v)]
+    diagonals = [v for v in neighbors if not is_direct(actual, v)]
+    return straights + diagonals
 
-def nombre_existe(grafo, name): # Verifica si el nombre ya existe en el grafo
+def name_exists(grafo, name): # Verifica si el nombre ya existe en el grafo
     for nodo, data in grafo.items():
         if name in data['personas']:
             return True
@@ -243,7 +244,7 @@ def main():
 
                     elif selection_3 == "3": # Agregar familiar
                         if name and ubication:
-                            if nombre_existe(grafo, name):
+                            if name_exists(grafo, name):
                                 print(f"El familiar {name} ya existe en el sistema. Por favor, intenta con otro nombre.")
                             else:
                                 if ubication in grafo:
