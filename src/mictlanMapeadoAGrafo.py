@@ -1,5 +1,14 @@
 # Se crea el código lector del mapeado para crear el grafo del cementerio
 def read_map(filename):
+    """
+    Lee un archivo de texto que contiene una matriz de adyacencia binaria.
+
+    Parámetros:
+    - filename (str): Ruta del archivo que contiene la matriz del cementerio.
+
+    Retorna:
+    - list of list of int: Matriz de adyacencia leída desde el archivo.
+    """
     adjacency = []
     with open(filename, 'r') as file:
         for line in file:
@@ -7,7 +16,19 @@ def read_map(filename):
             adjacency.append(row)
     return adjacency
 
+
 def obtain_neighbors(adjacency, row, col):
+    """
+    Obtiene los vecinos válidos (adyacentes) de una celda específica en una matriz.
+
+    Parámetros:
+    - adjacency (list of list of int): Matriz que representa el mapa.
+    - row (int): Fila de la celda actual.
+    - col (int): Columna de la celda actual.
+
+    Retorna:
+    - list of tuple: Lista de coordenadas (fila, columna) de los vecinos disponibles.
+    """
     neighbors = []
     rows = len(adjacency)
     cols = len(adjacency[0]) if rows > 0 else 0
@@ -21,6 +42,15 @@ def obtain_neighbors(adjacency, row, col):
     return neighbors
 
 def create_adjacency_list(adjacency):
+    """
+    Convierte una matriz de adyacencia en una lista de adyacencia basada en coordenadas.
+
+    Parámetros:
+    - adjacency (list of list of int): Matriz que representa el mapa.
+
+    Retorna:
+    - dict: Diccionario con claves como tuplas (fila, columna) y valores como listas de vecinos.
+    """
     adjacency_list = {}
     for row in range(len(adjacency)):
         for col in range(len(adjacency[0])):
@@ -30,6 +60,13 @@ def create_adjacency_list(adjacency):
     return adjacency_list
 
 def save_adjacency_list(adjacency_list, filename):
+    """
+    Guarda la lista de adyacencia en un archivo .py como estructura de diccionario de Python.
+
+    Parámetros:
+    - adjacency_list (dict): Diccionario con nodos y vecinos.
+    - filename (str): Ruta del archivo de salida.
+    """
     with open(filename, 'w') as file:
         file.write("grafo = {\n")
         for vertex, neighbors in adjacency_list.items():
