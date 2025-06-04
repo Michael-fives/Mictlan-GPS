@@ -2,6 +2,17 @@ from mictlanGrafo import grafo
 import os
 
 def bfs(start, end):
+    """
+    Realiza una búsqueda en anchura (BFS) desde el nodo 'start' hasta el nodo 'end'.
+
+    Args:
+        start (tuple): Coordenada inicial (x, y).
+        end (tuple): Coordenada destino (x, y).
+
+    Returns:
+        list: Ruta desde 'start' hasta 'end' como una lista de coordenadas [(x1, y1), (x2, y2), ...],
+              o None si no se encontró ruta.
+    """
     from collections import deque
 
     queue = deque([start])
@@ -30,16 +41,44 @@ def bfs(start, end):
     return None  # Si no se encuentra ruta
 
 def is_direct(actual, neighbor):
-    # Recto si fila o columna es igual
+    """
+    Determina si un vecino está en dirección recta respecto al nodo actual.
+
+    Args:
+        actual (tuple): Coordenada actual (x, y).
+        neighbor (tuple): Coordenada vecina (x, y).
+
+    Returns:
+        bool: True si está en la misma fila o columna, False si es diagonal.
+    """
     return actual[0] == neighbor[0] or actual[1] == neighbor[1]
 
 def order_neighbors(actual, neighbors):
-    # Ordena los vecinos para priorizar los rectos
+    """
+    Ordena los vecinos de un nodo para priorizar los que están en dirección recta.
+
+    Args:
+        actual (tuple): Coordenada actual.
+        neighbors (list): Lista de coordenadas vecinas.
+
+    Returns:
+        list: Lista ordenada de vecinos, primero los rectos y luego los diagonales.
+    """
     straights = [v for v in neighbors if is_direct(actual, v)]
     diagonals = [v for v in neighbors if not is_direct(actual, v)]
     return straights + diagonals
 
 def name_exists(grafo, name): # Verifica si el nombre ya existe en el grafo
+    """
+    Verifica si un nombre ya está registrado en alguna ubicación del grafo.
+
+    Args:
+        grafo (dict): Grafo que contiene ubicaciones y personas.
+        name (str): Nombre a buscar.
+
+    Returns:
+        bool: True si el nombre ya existe, False si no.
+    """
     for nodo, data in grafo.items():
         if name in data['personas']:
             return True
@@ -180,7 +219,7 @@ def main():
                                     elif i == len(route) - 1:  # Destino
                                         map[x][y] = 'X'
                                     else:  # Ruta
-                                        map[x][y] = 'R'
+                                        map[x][y] = '.'
                                 
                                 # Imprimir el mapa modificado
                                 print("\nMapa de ruta:")
@@ -266,6 +305,9 @@ def main():
                                             texto_grafo = pprint.pformat(grafo, indent=4, width=250)
                                             file.write(texto_grafo)
                                             file.write("\n")
+
+                                        ubication = None
+                                        name = None
                                 else:
                                     print(f"La ubicación {ubication} no es válida. Por favor, intenta de nuevo.")
                         else:
